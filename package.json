@@ -1,0 +1,8 @@
+{
+  "name": "Webdev-Exam",
+  "version": "1.0.0",
+  "author": "lixxteq <rlv1zhakov.liv@gmail.com>",
+  "devDependencies": {
+    "eslint": "^8.31.0"
+  }
+}

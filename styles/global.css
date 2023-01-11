@@ -1,0 +1,29 @@
+:root {
+    --color-red: #790604; /* вишнево-красный */
+    --color-azure: #007ba7; /* лазурный */
+    --color-gray-primary: #808080; 
+    --color-gray-secondary: #5a5a5a;
+    --color-orange: #ea9b30; /* светло-оранжевый */
+    --color-sandybrown: #f4a460; /* песчаный */
+    --color-paleyellow: #FFDB8B; /* бледно-желтый */
+    --color-beige: #f5f5dc; /* бежевый */
+}
+
+body {
+    font-family: 'Montserrat';
+}
+
+.header, .navbar {
+    background-color: var(--color-red);
+}
+
+.nav-link {
+    color: white;
+}
+
+.alert-custom {
+    position: fixed;
+    top: 0;
+    margin: 10px;
+    z-index: 1;
+}

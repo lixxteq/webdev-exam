@@ -1,0 +1,7 @@
+
+.about {
+    background-color: var(--color-sandybrown);
+    background-image: url(/assets/azure-sea.jpg);
+    background-repeat: no-repeat;
+    height: 400px;
+}
