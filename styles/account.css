@@ -9,26 +9,15 @@
     --color-beige: #f5f5dc; /* бежевый */
 }
 
-.about {
-    background-color: var(--color-sandybrown);
-    background-image: url(/assets/azure-sea.jpg);
-    background-repeat: no-repeat;
-    height: 400px;
-    --bs-gutter-x: 0
-}
-
-.selected-item {
+.fa:hover {
     background-color: var(--color-azure);
     color: var(--color-beige);
 }
 
-.pagination {
-    flex-wrap: wrap;
+.fa-trash:hover {
+    background-color: var(--color-red) !important;
 }
 
-@media screen and (max-width: 660px) {
-    .guides-mountpoint img {
-        width: 32px;
-    }
+span {
+    color: var(--color-gray-primary);
 }
-

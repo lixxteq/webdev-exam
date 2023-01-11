@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/global.css">
+    <link rel="stylesheet" href="/styles/index.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <title>7Ways</title>
+</head>
+
+<body>
+    <div class="root">
+        <header class="header">
+            <nav class="navbar container w-80 navbar-expand-lg">
+                <a class="navbar-brand" href="#"><img src="/assets/logo-nobg-notext-inverted.png" alt="Logo"
+                        width="128"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHead"
+                    aria-controls="navbarHead" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarHead">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="#">Главная</a>
+                        <a class="nav-item nav-link" href="account.html">Личный кабинет</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main class="main">
+            <div class="about row align-items-center justify-content-center">
+                <div class="about-logo col-sm-5 d-flex">
+                    <img src="/assets/logo-nobg.png" class="mx-auto mw-100" alt="Logo">
+                </div>
+                <div class="about-info col-sm-5 text-center">
+                    <h3 class="fw-bold px-3">7Ways покажет вам лучшие туристические места Москвы и поможет организовать путешествие по этим
+                        местам с профессиональными гидами.</h3>
+                </div>
+            </div>
+            <div class="benefits container text-center text-uppercase mt-5">
+                <h2>Почему именно мы?</h2>
+                <div class="row mt-3">
+                    <div class="col-4">Мы предоставляем гарантии и быструю поддержку в случае проблем.</div>
+                    <div class="col-4">Мы можем предложить вам более 100 туристических маршрутов, вы обязательно найдете
+                        то что придется вам по вкусу!</div>
+                    <div class="col-4">В нашем распоряжении множество профессиональных гидов с многолетним опытом,
+                        знающих многие языки мира.</div>
+                </div>
+            </div>
+            <div class="routes container mt-5" id="routes">
+                <h2>Туристические маршруты</h2>
+                <div class="filter row">
+                    <div class="search col-6">
+                        <label for="#search-bar">Поиск по названию</label>
+                        <input class="search-bar form-control" id="search-bar" type="text" placeholder="Введите запрос">
+                    </div>
+                    <div class="select-by-object col-6">
+                        <label for="#select-by-object">Поиск по основным объектам</label>
+                        <select class="form-select" name="select-by-object" id="select-by-object">
+                            <option value="null">Не выбрано</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table class="table table-hover table-responsive table-sm">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Описание</th>
+                            <th>Основные объекты</th>
+                            <th>Выбрать маршрут</th>
+                        </tr>
+                    </thead>
+                    <tbody class="routes-mountpoint"></tbody>
+                </table>
+
+                <nav aria-label="Пагинация">
+                    <ul class="pagination pagination-sm pagination-centered">
+                        <li class="page-item">
+                            <a class="page-link" href="#routes" aria-label="Предыдущая">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <!-- <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+                        <li class="page-item">
+                            <a class="page-link" href="#routes" aria-label="Следующая">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="guides container d-none" id="guides">
+                <h2 class="guides-title">Доступные гиды</h2>
+                <h3 class="route-title"></h3>
+                <div class="filter row">
+                    <div class="select-by-lang col-6">
+                        <label for="#select-by-lang">Выбор гида по языку</label>
+                        <select class="form-select" id="select-by-lang" name="select-by-lang"></select>
+                    </div>
+                    <div class="select-by-experience col-6">
+                        <label for="select-by-experience">Опыт работы</label>
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">От</span>
+                            </div>
+                            <input id="select-by-experience" type="text" class="form-control"
+                                aria-label="Количество лет">
+                            <div class="input-group-append">
+                                <span class="input-group-text">лет</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-hover table-responsive table-sm">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>ФИО</th>
+                            <th>Языки</th>
+                            <th>Опыт работы (годы)</th>
+                            <th>Стоимость услуг в час</th>
+                            <th>Выбрать гида</th>
+                        </tr>
+                    </thead>
+                    <tbody class="guides-mountpoint"></tbody>
+                </table>
+            </div>
+
+            <div class="confirm container text-center d-none mt-4 pb-4" id="confirm">
+                <button class="confirm-button btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal">Оформить заявку</button>
+            </div>
+        </main>
+        <footer class="footer">
+
+        </footer>
+
+
+
+        <div id="liveAlertPlaceholder" class="alert-custom"></div>
+
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog .modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Оформление заявки</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <h4>Фио гида: <span class="modal-guide-name"></span></h4>
+                            <h4>Название маршрута: <span class="modal-route-name"></span></h4>
+                            <div class="row request-options mt-4">
+                                <div class="col-4">
+                                    <label for="">Дата экскурсии</label>
+                                    <input type="date" id="modal-date" name="modal-date">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Время начала</label>
+                                    <input type="time" id="modal-time" name="modal-time" min="09:00" max="23:00" step="1800">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Длительность экскурсии</label>
+                                    <select name="modal-duration" id="modal-duration">
+                                        <option value="1">1 час</option>
+                                        <option value="2">2 часа</option>
+                                        <option value="3">3 часа</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row request-options-second mt-1">
+                                <div class="col-4">
+                                    <label for="">Количество человек</label>
+                                    <input type="number" id="modal-amount" name="modal-amount" min="1" max="20">
+                                </div>
+                            </div>
+                            <div class="row request-options-special mt-4">
+                                <h4>Дополнительные опции:</h4>
+                                <div class="col-6">
+                                    <h5>Скидка для школьников и студентов</h5>
+                                    <label for="">Выберите, если вы школьник или студент (скидка 15%)</label>
+                                    <input type="checkbox" id="extra-option-1">
+                                </div>
+                                <div class="col-6">
+                                    <h5>Трансфер до станции метро после экскурсии</h5>
+                                    <label for="">Выберите, если желаете получить услугу (повышение стоимости на 25% в выходные и 30% в будние дни)</label>
+                                    <input type="checkbox" id="extra-option-2">
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <h3>Итоговая стоимость: <span class="modal-total-price"></span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary cancel-btn" data-bs-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-primary" id="modal-confirm-button">Подтвердить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="/src/global.js"></script>
+    <script src="/src/index.js"></script>
+</body>
+
+</html>

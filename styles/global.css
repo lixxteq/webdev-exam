@@ -9,8 +9,13 @@
     --color-beige: #f5f5dc; /* бежевый */
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: 'Montserrat';
+    background-color: var(--color-beige);
 }
 
 .header, .navbar {
@@ -26,14 +31,28 @@ body {
     top: 0;
     margin: 10px;
     z-index: 1000000;
-    background-color: var(--color-sandybrown);
     border-radius: 5px;
-}
-
-.selected-item {
-    background-color: var(--color-azure);
 }
 
 .main {
     background-color: var(--color-beige);
+}
+
+.about-account {
+    --bs-gutter-x: 0;
+    height: 250px;
+    background-image: url(/assets/moskva.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 15%;
+}
+
+.table {
+    word-wrap: break-word;
+}
+
+@media screen and (max-width: 660px) {
+    * {
+        font-size: calc(2.5vw);
+    }
 }
