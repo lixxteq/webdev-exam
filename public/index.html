@@ -45,8 +45,10 @@
                 <h2>Почему именно мы?</h2>
                 <div class="row">
                     <div class="col-4">Мы предоставляем гарантии и быструю поддержку в случае проблем.</div>
-                    <div class="col-4">Мы можем предложить вам более 100 туристических маршрутов, вы обязательно найдете то что придется вам по вкусу!</div>
-                    <div class="col-4">В нашем распоряжении множество профессиональных гидов с многолетним опытом, знающих многие языки мира.</div>
+                    <div class="col-4">Мы можем предложить вам более 100 туристических маршрутов, вы обязательно найдете
+                        то что придется вам по вкусу!</div>
+                    <div class="col-4">В нашем распоряжении множество профессиональных гидов с многолетним опытом,
+                        знающих многие языки мира.</div>
                 </div>
             </div>
             <div class="routes container" id="routes">
@@ -92,11 +94,119 @@
                     </ul>
                 </nav>
             </div>
+
+            <div class="guides container d-none" id="guides">
+                <h2 class="guides-title">Доступные гиды</h2>
+                <h3 class="route-title"></h3>
+                <div class="filter row">
+                    <div class="select-by-lang col-6">
+                        <label for="#select-by-lang">Выбор гида по языку</label>
+                        <select class="form-select" id="select-by-lang" name="select-by-lang"></select>
+                    </div>
+                    <div class="select-by-experience col-6">
+                        <label for="select-by-experience">Опыт работы</label>
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">От</span>
+                            </div>
+                            <input id="select-by-experience" type="text" class="form-control"
+                                aria-label="Количество лет">
+                            <div class="input-group-append">
+                                <span class="input-group-text">лет</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>ФИО</th>
+                            <th>Языки</th>
+                            <th>Опыт работы (годы)</th>
+                            <th>Стоимость услуг в час</th>
+                            <th>Выбрать гида</th>
+                        </tr>
+                    </thead>
+                    <tbody class="guides-mountpoint"></tbody>
+                </table>
+            </div>
+
+            <div class="confirm container text-center d-none mb-4" id="confirm">
+                <button class="confirm-button btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#confirmModal">Оформить заявку</button>
+            </div>
         </main>
         <footer class="footer">
 
         </footer>
+
+
+
         <div id="liveAlertPlaceholder" class="alert-custom"></div>
+
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog .modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Оформление заявки</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <h4>Фио гида: <span class="modal-guide-name"></span></h4>
+                            <h4>Название маршрута: <span class="modal-route-name"></span></h4>
+                            <div class="row request-options">
+                                <div class="col-4">
+                                    <label for="">Дата экскурсии</label>
+                                    <input type="date" id="modal-date" name="modal-date">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Время начала</label>
+                                    <input type="time" id="modal-time" name="modal-time">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Длительность экскурсии</label>
+                                    <select name="modal-duration" id="modal-duration">
+                                        <option value="1">1 час</option>
+                                        <option value="2">2 часа</option>
+                                        <option value="3">3 часа</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row request-options-second">
+                                <div class="col-4">
+                                    <label for="">Количество человек</label>
+                                    <input type="number" id="modal-amount" name="modal-amount">
+                                </div>
+                            </div>
+                            <div class="row request-options-special">
+                                <h4>Дополнительные опции:</h4>
+                                <div class="col-6">
+                                    <h5>Скидка для школьников и студентов</h5>
+                                    <label for="">Выберите, если вы школьник или студент</label>
+                                    <input type="checkbox" id="extra-option-1">
+                                </div>
+                                <div class="col-6">
+                                    <h5>Трансфер до станции метро после экскурсии</h5>
+                                    <label for="">Выберите, если желаете получить услугу</label>
+                                    <input type="checkbox" id="extra-option-2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3>Итоговая стоимость: <span class="modal-total-price"></span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary cancel-btn" data-bs-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-primary" id="modal-confirm-button">Подтвердить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

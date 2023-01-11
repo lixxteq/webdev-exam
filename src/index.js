@@ -43,6 +43,7 @@ const buildRoutesChunk = (chunk) => {
 
 let routesCurrentPage = 1;
 let currentSelectedRoute = null;
+let currentSelectedGuide = null;
 
 const setActive = (page) => {
     const paginationBar = document.querySelector('.pagination');
@@ -110,9 +111,77 @@ const buildRoutesList = async (routes = null) => {
 
     setupPagination(partitioned);
     buildRoutesChunk(partitioned[0]);
+    if (currentSelectedRoute != null) setActiveRoute(currentSelectedRoute);
 };
 
+const setActiveGuide = (guide) => {
+    const guidesTable = document.querySelector('.guides-mountpoint');
+    currentSelectedGuide = guide;
 
+    for (let el of guidesTable.children) {
+        el.classList.remove('selected-item');
+        if (el.getAttribute('data-value') == guide.id) el.classList.add('selected-item');
+    }
+
+    const confirmBtnContainer = document.querySelector('.confirm');
+    confirmBtnContainer.classList.remove('d-none');
+}
+
+const buildGuideItem = (guide) => {
+    const item = document.createElement('tr');
+    const avatar = document.createElement('th');
+    const name = document.createElement('th');
+    const langs = document.createElement('th');
+    const experience = document.createElement('th');
+    const price = document.createElement('th');
+    const choose = document.createElement('th');
+    const chooseBtn = document.createElement('a');
+    const avatarImg = document.createElement('img');
+
+    avatarImg.src = '/assets/avatar';
+    avatarImg.width = 64;
+    avatar.append(avatarImg);
+    name.textContent = guide.name;
+    langs.textContent = guide.language;
+    price.textContent = guide.pricePerHour;
+    experience.textContent = guide.workExperience;
+    chooseBtn.textContent = 'Выбрать гида';
+    chooseBtn.classList = 'btn btn-outline-secondary';
+    item.setAttribute('data-value', guide.id);
+    chooseBtn.onclick = () => {
+        setActiveGuide(guide);
+    }
+
+    choose.append(chooseBtn);
+    item.append(avatar, name, langs, experience, price, choose);
+    return item;
+};
+
+const buildGuidesList = async (guidesList) => {
+    const guidesContainer = document.querySelector('#guides');
+    const guidesTable = guidesContainer.querySelector('.guides-mountpoint');
+    const routeTitle = guidesContainer.querySelector('.route-title');
+    routeTitle.textContent = `Выбранный маршрут: ${currentSelectedRoute.name}`;
+    guidesTable.innerHTML = '';
+    
+    for (let guide of guidesList) {
+        guidesTable.append(buildGuideItem(guide));
+    };
+
+    guidesContainer.classList.remove('d-none');
+    if (currentSelectedGuide != null) setActiveGuide(currentSelectedGuide);
+};
+
+const setActiveRoute = (route) => {
+    const routesContainer = document.querySelector('.routes-mountpoint');
+    currentSelectedRoute = route;
+    currentSelectedGuide = null;
+    const routeElements = routesContainer.children;
+    for (let el of routeElements) {
+        el.classList.remove('selected-item');
+        if (el.getAttribute('data-value') == route.id) el.classList.add('selected-item');
+    }
+}
 
 const buildRouteItem = (route) => {
     // console.log(route);
@@ -121,20 +190,82 @@ const buildRouteItem = (route) => {
     const desc = document.createElement('th');
     const objects = document.createElement('th');
     const select = document.createElement('th');
-    const selectBtn = document.createElement('button')
+    const selectBtn = document.createElement('a');
     selectBtn.textContent = 'Выбрать маршрут';
+    selectBtn.classList = 'btn btn-outline-secondary';
+    selectBtn.href = '#guides';
+    item.setAttribute('data-value', route.id);
     name.textContent = route.name;
     desc.textContent = route.description;
     objects.textContent = route.mainObject;
     select.append(selectBtn);
-    selectBtn.onclick = () => {
-        currentSelectedRoute = route;
-        buildGuidesList(route.id)
+    selectBtn.onclick = async () => {
+        setActiveRoute(route);
+        const guidesList = await getGuides(currentSelectedRoute.id);
+        buildGuidesList(guidesList);
+        buildGuideLangsList(guidesList);
+        attachGuideSelectHandler(guidesList);
+        // selectGuideOptionsHandler(guidesList);
     }
 
     item.append(name, desc, objects, select);
     return item;
 };
+
+const buildGuideLangsList = (guidesList) => {
+    const langSelect = document.querySelector('#select-by-lang');
+    langSelect.innerHTML = ''
+    console.log('invoked');
+
+
+    const langs = [];
+    for (let guide of guidesList) {
+        langs.push(guide.language);
+    }
+    const uniqLangsList = [...new Set(langs)];
+    console.log(uniqLangsList);
+
+    const nullOption = document.createElement('option');
+    nullOption.textContent = 'Не выбрано';
+    nullOption.value = 'null';
+    langSelect.append(nullOption);
+
+    for (let l of uniqLangsList) {
+        let option = document.createElement('option');
+        option.textContent = l;
+        option.value = l;
+        langSelect.append(option);
+        console.log('appended');
+    }
+};
+
+const selectGuides = (lang, experience, guidesList) => {
+    const requiredGuides = [];
+    console.log('select invoked');
+    for (let guide of guidesList) {
+        if ((guide.language == lang || lang == 'null') && (guide.workExperience >= experience || experience == '')) requiredGuides.push(guide);
+    }
+    console.log(requiredGuides);
+    return requiredGuides;
+}
+
+const attachGuideSelectHandler = (guidesList) => {
+    const langSelect = document.querySelector('#select-by-lang');
+    console.log(langSelect);
+    const experienceInput = document.querySelector('#select-by-experience');
+
+    const selectHandler = () => {
+        const lang = langSelect.value;
+        const minExperience = experienceInput.value;
+        console.log('handler invoked');
+
+        if (lang.value == 'null' && minExperience == '') buildGuidesList(guidesList)
+        else buildGuidesList(selectGuides(lang, minExperience, guidesList));
+    }
+
+    langSelect.onchange = selectHandler;
+    experienceInput.oninput = selectHandler;
+}
 
 const buildMainObjectsList = (allRoutes) => {
     const objectSelect = document.querySelector('#select-by-object');
@@ -177,9 +308,60 @@ const searchRoutes = (searchQuery, mainObject, allRoutes) => {
     return requiredRoutes;
 }
 
+// const validate = (date, time, amount) => {
+//     // var dateformat = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+//     // console.log(date);
+//     // if (date.match(dateformat)) return true
+//     // else return false;
+//     return true;
+// }
+const isWeekend = (date) => {
+
+}
+
+const is
+
+const calculatePrice = (date, guideHourPrice, hoursNumber, )
+
+const attachModalHandler = () => {
+    const openModalBtn = document.querySelector('.confirm-button');
+    const modalWindow = document.querySelector('#confirmModal');
+    // const cancelBtn = modalWindow.querySelector('.cancel-btn');
+
+    modalWindow.addEventListener('show.bs.modal', () => {
+        if (!currentSelectedGuide || !currentSelectedRoute) {
+            alert('Выберите маршрут и гида', 'error');
+            modalWindow.classList.remove('show')
+        }
+        else {
+            const confirmBtn = modalWindow.querySelector('#modal-confirm-button');
+            const guideNameField = modalWindow.querySelector('.modal-guide-name');
+            const routeNameField = modalWindow.querySelector('.modal-route-name');
+            const dateSelect = modalWindow.querySelector('#modal-date');
+            const timeSelect = modalWindow.querySelector('#modal-time');
+            const durationSelect = modalWindow.querySelector('#modal-duration');
+            const amountInput = modalWindow.querySelector('#modal-amount');
+            // const extraOption1 = modalWindow.querySelector('#modal-option-1');
+
+            guideNameField.textContent = currentSelectedGuide.name;
+            routeNameField.textContent = currentSelectedRoute.name;
+            amountInput.textContent = 'Заполните все поля';
+
+            confirmBtn.onclick = () => {
+                // if (!validate(dateSelect.value, timeSelect.value, amountInput.value)) {
+                //     alert('Введены неверные данные', 'error');
+                //     modalWindow.classList.remove('show');
+                // }
+                
+            }
+        }
+    })
+}
+
 window.onload = async () => {
     const allRoutes = await getRoutes();
     buildRoutesList(allRoutes);
     buildMainObjectsList(allRoutes);
     attachSearchHandler(allRoutes);
+    attachModalHandler();
 }

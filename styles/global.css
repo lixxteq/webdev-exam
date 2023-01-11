@@ -25,5 +25,15 @@ body {
     position: fixed;
     top: 0;
     margin: 10px;
-    z-index: 1;
+    z-index: 1000000;
+    background-color: var(--color-sandybrown);
+    border-radius: 5px;
+}
+
+.selected-item {
+    background-color: var(--color-azure);
+}
+
+.main {
+    background-color: var(--color-beige);
 }
