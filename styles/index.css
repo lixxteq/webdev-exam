@@ -4,4 +4,5 @@
     background-image: url(/assets/azure-sea.jpg);
     background-repeat: no-repeat;
     height: 400px;
+    --bs-gutter-x: 0
 }
