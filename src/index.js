@@ -59,7 +59,7 @@ const setupPagination = (partitioned) => {
     const paginationBar = document.querySelector('.pagination');
     let currPages = paginationBar.children;
     while (currPages.length > 2) {
-        paginationBar.removeChild(currPages[currPages.length-2]);
+        paginationBar.removeChild(currPages[currPages.length - 2]);
     }
 
     const [prevBtn, nextBtn] = paginationBar.querySelectorAll('.page-item');
@@ -68,13 +68,13 @@ const setupPagination = (partitioned) => {
             routesCurrentPage -= 1;
             buildRoutesChunk(partitioned[routesCurrentPage]);
             setActive(routesCurrentPage);
-            
+
         }
         nextBtn.onclick = () => {
             routesCurrentPage += 1;
             buildRoutesChunk(partitioned[routesCurrentPage]);
             setActive(routesCurrentPage);
-            
+
         }
     }
 
@@ -88,7 +88,7 @@ const setupPagination = (partitioned) => {
         pageLink.textContent = i.toString();
         pageBtn.append(pageLink);
         pageBtn.onclick = () => {
-            buildRoutesChunk(partitioned[i-1]);
+            buildRoutesChunk(partitioned[i - 1]);
             setActive(i)
             routesCurrentPage = i;
         }
@@ -163,7 +163,7 @@ const buildGuidesList = async (guidesList) => {
     const routeTitle = guidesContainer.querySelector('.route-title');
     routeTitle.textContent = `Выбранный маршрут: ${currentSelectedRoute.name}`;
     guidesTable.innerHTML = '';
-    
+
     for (let guide of guidesList) {
         guidesTable.append(buildGuideItem(guide));
     };
@@ -316,12 +316,58 @@ const searchRoutes = (searchQuery, mainObject, allRoutes) => {
 //     return true;
 // }
 const isWeekend = (date) => {
-
+    const ndate = new Date(date);
+    if (ndate.getDay() == 0 || ndate.getDay() == 6) return true;
+    return false;
 }
 
-const is
+const priceForMorning = (time) => {
+    let hours = time.slice(0, 2);
+    if (hours >= 9 && hours <= 12) return 400
+    else return 0;
+}
 
-const calculatePrice = (date, guideHourPrice, hoursNumber, )
+const priceForEvening = (time) => {
+    let hours = time.slice(0, 2);
+    if (hours >= 20 && hours <= 23) return 1000
+    else return 0;
+}
+
+const priceForHolidaysWeekends = (date) => {
+    const holidayList = [
+        '01-01',
+        '01-02',
+        '01-03',
+        '01-04',
+        '01-05',
+        '01-06',
+        '02-23',
+        '03-08',
+        '05-01',
+        '05-08',
+        '05-09',
+        '06-12',
+        '09-01',
+        '11-06'
+    ];
+
+    const month = date.split('-')[1];
+    const day = date.split('-')[2];
+    if (isWeekend(date) || holidayList.includes(`${month}-${day}`)) return 1.5;
+    return 1;
+}
+
+const priceForAmount = (amount) => {
+    if (amount >= 10 && amount <= 20) return 1500;
+    if (amount >= 5 && amount < 10) return 1000;
+    return 0;
+}
+
+const getTotalPrice = (date, time, guideHourPrice, hoursNumber, peopleAmount, option1 = false, option2 = false) => {
+    let basePrice = guideHourPrice * hoursNumber * priceForHolidaysWeekends(date) + priceForMorning(time) + priceForEvening(time) + priceForAmount(peopleAmount);
+    let totalPrice = basePrice * (option1 ? 0.85 : 1) * (option2 ? (isWeekend(date) ? 1.25 : 1.3) : 1);
+    return totalPrice;
+}
 
 const attachModalHandler = () => {
     const openModalBtn = document.querySelector('.confirm-button');
@@ -341,17 +387,40 @@ const attachModalHandler = () => {
             const timeSelect = modalWindow.querySelector('#modal-time');
             const durationSelect = modalWindow.querySelector('#modal-duration');
             const amountInput = modalWindow.querySelector('#modal-amount');
-            // const extraOption1 = modalWindow.querySelector('#modal-option-1');
+            const totalPrice = modalWindow.querySelector('.modal-total-price');
+            const extraOption1 = modalWindow.querySelector('#extra-option-1');
+            const extraOption2 = modalWindow.querySelector('#extra-option-2');
 
             guideNameField.textContent = currentSelectedGuide.name;
             routeNameField.textContent = currentSelectedRoute.name;
-            amountInput.textContent = 'Заполните все поля';
+            totalPrice.textContent = 'Заполните все поля';
+
+            amountInput.oninput = () => {
+                console.log(dateSelect.value, timeSelect.value, currentSelectedGuide.pricePerHour, parseInt(durationSelect.value), parseInt(amountInput.value), extraOption1.value, extraOption2.value);
+                totalPrice.textContent = getTotalPrice(dateSelect.value, timeSelect.value, currentSelectedGuide.pricePerHour, parseInt(durationSelect.value), parseInt(amountInput.value), extraOption1.checked, extraOption2.checked);
+            }
+
+            extraOption1.onchange = () => {
+                totalPrice.textContent = getTotalPrice(dateSelect.value, timeSelect.value, currentSelectedGuide.pricePerHour, parseInt(durationSelect.value), parseInt(amountInput.value), extraOption1.checked, extraOption2.checked);
+            }
+
+            extraOption2.onchange = () => {
+                totalPrice.textContent = getTotalPrice(dateSelect.value, timeSelect.value, currentSelectedGuide.pricePerHour, parseInt(durationSelect.value), parseInt(amountInput.value), extraOption1.checked, extraOption2.checked);
+            }
+
+            durationSelect.onchange = () => {
+                totalPrice.textContent = getTotalPrice(dateSelect.value, timeSelect.value, currentSelectedGuide.pricePerHour, parseInt(durationSelect.value), parseInt(amountInput.value), extraOption1.checked, extraOption2.checked);
+            }
+
+            timeSelect.onchange = () => {
+                totalPrice.textContent = getTotalPrice(dateSelect.value, timeSelect.value, currentSelectedGuide.pricePerHour, parseInt(durationSelect.value), parseInt(amountInput.value), extraOption1.checked, extraOption2.checked);
+            }
+
+            dateSelect.onchange = () => {
+                totalPrice.textContent = getTotalPrice(dateSelect.value, timeSelect.value, currentSelectedGuide.pricePerHour, parseInt(durationSelect.value), parseInt(amountInput.value), extraOption1.checked, extraOption2.checked);
+            }
 
             confirmBtn.onclick = () => {
-                // if (!validate(dateSelect.value, timeSelect.value, amountInput.value)) {
-                //     alert('Введены неверные данные', 'error');
-                //     modalWindow.classList.remove('show');
-                // }
                 
             }
         }
