@@ -15,7 +15,8 @@ const alert = (message, type) => {
 
     alertPlaceholder.append(wrapper);
     const alert = 
-        bootstrap.Alert.getOrCreateInstance(alertPlaceholder.querySelector('.alert'));
+        bootstrap.Alert.getOrCreateInstance(
+            alertPlaceholder.querySelector('.alert'));
     setTimeout(() => {
         alert.close();
     }, 5000);
