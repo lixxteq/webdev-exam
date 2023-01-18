@@ -26,6 +26,6 @@
         "no-array-constructor": "error"
     },
     "parserOptions": {
-        "ecmaVersion": 2017
+        "ecmaVersion": 2019
     }
 }
