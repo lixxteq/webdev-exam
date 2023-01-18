@@ -170,6 +170,7 @@ const buildRouteItem = (route) => {
         buildGuidesList(guidesList);
         buildGuideLangsList(guidesList);
         attachGuideSelectHandler(guidesList);
+        selectRouteHandler(route.coords); // mapApi.js reference
     };
 
     item.append(name, desc, objects, select);
